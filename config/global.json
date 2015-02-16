@@ -1,0 +1,8 @@
+{
+    "applicationName" : "testleancloud",
+    "applicationId": "d613xrdozu25ouft49e3r5fkp3ezbyvslw3drzuni01foscv",
+    "applicationKey": "tdu8okdk4qtz7zs56mnc9prqnwktdaf9jqn7vfrlmtbm68n2",
+    "global": {
+        "avVersion": "0.3.1"
+    }
+}
