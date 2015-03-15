@@ -2,12 +2,12 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title><%= title %></title>
+		<title>Char Room</title>
 	</head>
 	<body>
 		<div id="container">
-			<textarea name="" id="" cols="30" rows="10" placeholder="请输入消息..."></textarea>
-			<button id="submit">发送消息</button>
+			<textarea name="" id="" cols="30" rows="10"></textarea>
+			<button id="submit">submit</button>
 		</div>
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
@@ -19,7 +19,7 @@
 				var val = $textarea.val()
 				if (val) {
 					socket.emit('chat msg', val)
-					$textarea.val('')[0].focus()
+					$textarea.val('')
 				}
 			})
 

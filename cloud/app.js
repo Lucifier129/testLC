@@ -16,20 +16,16 @@ app.get('/chatroom', function(req, res) {
 	res.render('chatroom.ejs', {title: 'Chat Room'})
 })
 
-
-
-var http = require('http').Server(app)
-var io = require('socket.io')(http)
+var server = require('http').Server(app)
+var io = require('socket.io')(server)
 
 io.on('connection', function(socket) {
 	socket.broadcast.emit('hi', 'asdfasdf');
 	socket.on('chat msg', function(msg) {
-		io.emit('chat msg', {data:msg})
+		io.emit('chat msg', msg)
 	})
 })
 
 
-
-
 // 最后，必须有这行代码来使 express 响应 HTTP 请求
-app.listen(8000)
+server.listen(8000)
