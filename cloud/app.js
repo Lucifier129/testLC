@@ -10,11 +10,11 @@ app.use(express.bodyParser())
 
 // 使用 Express 路由 API 服务 /hello 的 HTTP GET 请求
 app.get('/hello', function(req, res) {
-  res.render('hello', {message:'002'})
+  res.render('hello.ejs', {message:'002'})
 })
 
 app.get('/chatroom', function(req, res) {
-	res.render('chatroom', {title: 'Chat Room'})
+	res.render('chatroom.ejs', {title: 'Chat Room'})
 })
 
 var server = require('http').Server(app)
