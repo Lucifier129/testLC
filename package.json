@@ -1,0 +1,10 @@
+{
+  "name": "testLC",
+  "description": "textLC",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "^4.12.2",
+    "socket.io": "^1.3.5"
+  }
+}

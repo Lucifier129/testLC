@@ -9,7 +9,7 @@ app.set('view engine', 'ejs')    // 设置 template 引擎
 
 // 使用 Express 路由 API 服务 /hello 的 HTTP GET 请求
 app.get('/hello', function(req, res) {
-  res.render('hello', { message: '呵呵哒' })
+  res.end('heheda')
 })
 
 app.get('/chatroom', function(req, res) {
@@ -24,7 +24,7 @@ var io = require('socket.io')(http)
 io.on('connection', function(socket) {
 	socket.broadcast.emit('hi', 'asdfasdf');
 	socket.on('chat msg', function(msg) {
-		io.emit('chat msg', msg)
+		io.emit('chat msg', {data:msg})
 	})
 })
 
@@ -32,7 +32,4 @@ io.on('connection', function(socket) {
 
 
 // 最后，必须有这行代码来使 express 响应 HTTP 请求
-//app.listen()
-http.listen(3000, function(err) {
-	console.log(err || 'listen 3000')
-})
+app.listen(3000)
