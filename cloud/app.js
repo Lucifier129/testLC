@@ -9,11 +9,11 @@ app.set('view engine', 'ejs')    // 设置 template 引擎
 
 // 使用 Express 路由 API 服务 /hello 的 HTTP GET 请求
 app.get('/hello', function(req, res) {
-  res.end('heheda')
+  res.render('hello.ejs', {message:'001'})
 })
 
 app.get('/chatroom', function(req, res) {
-	res.sendFile(path.join(__dirname, 'views/chatroom.html'))
+	res.render('chatroom.ejs', {title: 'Chat Room'})
 })
 
 
@@ -32,4 +32,4 @@ io.on('connection', function(socket) {
 
 
 // 最后，必须有这行代码来使 express 响应 HTTP 请求
-app.listen(3000)
+app.listen(8000)
