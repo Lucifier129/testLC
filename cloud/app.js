@@ -29,4 +29,4 @@ io.on('connection', function(socket) {
 
 
 // 最后，必须有这行代码来使 express 响应 HTTP 请求
-server.listen(8000)
+server.listen()
