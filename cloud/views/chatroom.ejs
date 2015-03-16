@@ -30,6 +30,13 @@
 			socket.on('hi', function() {
 				console.log(arguments)
 			})
+
+			$('#container').on('keyup', 'textarea', function(e) {
+				var keyCode = e.keyCode
+				if (keyCode === 13) {
+					$('#submit').trigger('click')
+				}
+			})
 		})
 		</script>
 	</body>
