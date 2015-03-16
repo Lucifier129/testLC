@@ -4,7 +4,7 @@ var app = express()
 var path = require('path')
 
 // App 全局配置
-app.set('views', path.join(process.cwd(), 'cloud/views')) // 设置模板目录
+app.set('views', path.join(__dirname, 'views')) // 设置模板目录
 app.set('view engine', 'ejs') // 设置 template 引擎
 app.use(express.bodyParser())
 
