@@ -15,9 +15,7 @@ app.get('/hello', function(req, res) {
 })
 
 app.get('/chatroom', function(req, res) {
-	res.render('chatroom', {
-		title: 'Chat Room'
-	})
+	res.sendfile(path.join(__dirname, 'views/chatroom.html'))
 })
 
 var server = require('http').createServer(app)
