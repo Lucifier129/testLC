@@ -1,6 +1,7 @@
 // 在 Cloud code 里初始化 Express 框架
 var express = require('express')
 var app = express()
+var http = require('http')
 
 // App 全局配置
 app.set('views', 'cloud/views') // 设置模板目录
@@ -19,7 +20,7 @@ app.get('/chatroom', function(req, res) {
 	})
 })
 
-var server = app.listen(8000)
+var server = http.createServer(app)
 var io = require('socket.io')(server)
 
 io.on('connection', function(socket) {
@@ -27,4 +28,6 @@ io.on('connection', function(socket) {
 		io.emit('chat msg', msg)
 	})
 })
+
+server.listen(8000)
 
