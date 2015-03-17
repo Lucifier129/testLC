@@ -2,6 +2,7 @@
 var express = require('express')
 var app = express()
 var path = require('path')
+var fs = require('fs')
 
 // App 全局配置
 app.set('views', path.join(__dirname, 'views')) // 设置模板目录
@@ -15,7 +16,8 @@ app.get('/hello', function(req, res) {
 })
 
 app.get('/chatroom', function(req, res) {
-	res.sendfile(path.join(__dirname, 'views/chatroom.html'))
+	var content = fs.readFileSync(path.join(__dirname, 'views/chatroom.html'))
+	res.end(content)
 })
 
 var server = require('http').createServer(app)
@@ -28,4 +30,4 @@ io.on('connection', function(socket) {
 })
 
 
-server.listen()
+server.listen(8000)
