@@ -3,9 +3,13 @@
 	<head>
 		<meta charset="utf-8">
 		<title><%= title %></title>
+		<style type="text/css">
+		#container { width: 600px; height: 500px; overflow:scroll;}
+		</style>
 	</head>
 	<body>
-		<div id="container">
+		<div id="container"><div class="inner"></div></div>
+		<div id="edit">
 			<textarea name="" id="" cols="30" rows="10" placeholder="请输入消息..."></textarea>
 			<button id="submit">发送消息</button>
 			<p>
@@ -66,12 +70,18 @@
 					})
 					content.push(item)
 				})
-				$('#container').append(content)
+				if (!content.length) {
+					return
+				}
+				var $container = $('#container')
+				var $inner = $container.find('.inner')
+				$inner.append(content)
+				$container.scrollTop($inner.height())
 			}
 
-			$('#container')
+			$('#edit')
 				.on('click', '#submit', function() {
-					var $text = $('#container textarea')
+					var $text = $('#edit textarea')
 					var val = $text.val()
 					if (val) {
 						postMsg({
