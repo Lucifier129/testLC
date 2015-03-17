@@ -19,7 +19,7 @@ app.get('/chatroom', function(req, res) {
 	})
 })
 
-var server = require('http').createServer(app)
+var server = app.listen(8000)
 var io = require('socket.io')(server)
 
 io.on('connection', function(socket) {
@@ -28,8 +28,3 @@ io.on('connection', function(socket) {
 	})
 })
 
-app.listen = function() {
-	server.listen.apply(server, arguments)
-}
-
-app.listen(8000)
