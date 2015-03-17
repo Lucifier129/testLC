@@ -20,7 +20,7 @@ app.get('/chatroom', function(req, res) {
 	})
 })
 
-var server = http.createServer(app)
+var server = http.Server(app)
 var io = require('socket.io')(server)
 
 io.on('connection', function(socket) {
