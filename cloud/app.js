@@ -57,8 +57,6 @@ function saveMsg() {
 	fs.writeFileSync('cloud/msg-' + new Date().toDateString() + '.json', JSON.stringify(msgStorage))
 }
 
-process.on('exit', saveMsg)
-
 
 
 app.listen(8000)
