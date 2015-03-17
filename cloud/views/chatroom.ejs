@@ -8,35 +8,99 @@
 		<div id="container">
 			<textarea name="" id="" cols="30" rows="10" placeholder="请输入消息..."></textarea>
 			<button id="submit">发送消息</button>
+			<p>
+				<input type="text" placeholder="请输入姓名">
+				<button id="username">确定</button>
+			</p>
 		</div>
-		<script src="/socket.io/socket.io.js"></script>
+		<!-- <script src="/socket.io/socket.io.js"></script> -->
 		<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
 		<script>
+		window.page_data = {
+			msg_length: <%= msg_length %>,
+			user_name: <%= user_name %>
+		}
+		</script>
+		<script>
 		$(function() {
-			var socket = io()
-			$('#submit').on('click', function() {
-				var $textarea = $('textarea')
-				var val = $textarea.val()
-				if (val) {
-					socket.emit('chat msg', val)
-					$textarea.val('')[0].focus()
+
+			function postMsg(data) {
+				$.ajax({
+					url: '/message',
+					type: 'POST',
+					data: data || null
+				}).done(getMsg)
+			}
+
+			var onGetMsg = false
+
+			function getMsg() {
+				if (onGetMsg) {
+					return
 				}
-			})
+				onGetMsg = true
+				$.ajax({
+					url: '/message',
+					type: 'GET',
+					data: window.page_data
+				}).done(function(data) {
+					data = typeof data === 'string' ? $.parseJSON(data) : data
+					if ($.isArray(data.msg_list)) {
+						appendMsg(data.msg_list)
+						window.page_data.msg_length += data.msg_list.length
+					}
+					onGetMsg = false
+				}).error(function() {
+					onGetMsg = false
+				})
+			}
 
-			socket.on('chat msg', function(msg) {
-				$('#container').append('<p>' + msg + '</p>')
-			})
+			var template = '<div class="msg-item"><strong>{{user_name}} {{date}}</strong><p>{{msg}}</p></div>'
 
-			socket.on('hi', function() {
-				console.log(arguments)
-			})
+			function appendMsg(msgList) {
+				var content = []
+				$.each(msgList, function(_, msgObj) {
+					var item = template
+					$.each(msgObj, function(key, value) {
+						item = item.replace('{{' + key + '}}', value)
+					})
+					content.push(item)
+				})
+				$('#container').append(content)
+			}
 
-			$('#container').on('keyup', 'textarea', function(e) {
-				var keyCode = e.keyCode
-				if (keyCode === 13) {
-					$('#submit').trigger('click')
-				}
-			})
+			$('#container')
+				.on('click', '#submit', function() {
+					var $text = $('#container textarea')
+					var val = $text.val()
+					if (val) {
+						postMsg({
+							user_name: page_data.user_name,
+							date: new Date().toLocaleString(),
+							msg: val
+						})
+						$text.val('').focus()
+					}
+				})
+				.on('keyup', 'textarea', function(e) {
+					if (e.keyCode === 13) {
+						$('#submit').click()
+					}
+				})
+				.on('click', '#username', function() {
+					var $this = $(this)
+					var $input = $(this).siblings('input')
+					var val = $input.val()
+					if (val) {
+						page_data.user_name = val
+						$this.parent().fadeOut()
+					}
+				})
+
+			setInterval(getMsg, 3000)
+
+			getMsg()
+
 		})
 		</script>
 	</body>

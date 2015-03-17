@@ -2,6 +2,8 @@
 var express = require('express')
 var app = express()
 var http = require('http')
+var util = require('util')
+var fs = require('fs')
 
 // App 全局配置
 app.set('views', 'cloud/views') // 设置模板目录
@@ -14,20 +16,50 @@ app.get('/hello', function(req, res) {
 	})
 })
 
+var msgStorage = []
+
 app.get('/chatroom', function(req, res) {
 	res.render('chatroom', {
-		title: 'Chat Room'
+		title: 'Chat Room',
+		msg_length: msgStorage.length,
+		user_name: new Date().getTime()
 	})
 })
 
-var server = http.Server(app)
-var io = require('socket.io')(server)
 
-io.on('connection', function(socket) {
-	socket.on('chat msg', function(msg) {
-		io.emit('chat msg', msg)
-	})
+
+function isEmptyObject(obj) {
+	return Object.keys(obj).length === 0
+}
+
+app.post('/message', function(req, res) {
+	var body = req.body
+	if (!isEmptyObject(body)) {
+		msgStorage.push(body)
+		if (body.msg === 'save message by Jade') {
+			saveMsg()
+		}
+	}
+	res.end(JSON.stringify({
+		status: 'ok'
+	}))
 })
 
-server.listen(8000)
+app.get('/message', function(req, res) {
+	var query = req.query
+	var content = query.msg_length ? msgStorage.slice(+query.msg_length) : []
+	res.end(JSON.stringify({
+		msg_list: content
+	}))
+})
+
+function saveMsg() {
+	fs.writeFileSync('cloud/msg-' + new Date().toDateString() + '.json', JSON.stringify(msgStorage))
+}
+
+process.on('exit', saveMsg)
+
+
+
+app.listen(8000)
 
